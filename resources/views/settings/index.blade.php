@@ -17,17 +17,25 @@
                                     value="{{ $setting->company_name ?? '' }}">
                             </div>
                             <div class="form-group p-3">
-                                <label for="company_logo">Company Logo:</label>
-                                <input type="file" name="company_logo" id="company_logo" class="form-control">
+                                <p>Company Logo</p>
+                                <label for="company_logo">
+                                    @if ($setting->company_logo_path)
+                                        <img src="{{ asset('images/' . $setting->company_logo_path) }}" alt="Company Logo"
+                                            height="10%" width="10%" class="img-fluid mt-3">
+                                    @else
+                                        {{-- UPLOAD COMPANY LOGO --}}
+                                        <img src="{{ asset('assets/img/upload.png') }}" alt="upload placeholder" height="50%"
+                                            width="50%" class="img-fluid mt-3">
+                                    @endif
+                                </label>
+                                <input type="file" name="company_logo" id="company_logo" class="form-control"
+                                    style="display:none;">
                                 <div id="passwordHelpBlock" class="form-text">
                                     The should be a JPG, or PNG
                                 </div>
 
                                 {{-- show the image --}}
-                                @if ($setting->company_logo_path)
-                                    <img src="{{ asset('images/' . $setting->company_logo_path) }}" alt="Company Logo" height="10%" width="10%"
-                                        class="img-fluid mt-3">
-                                @endif
+
                             </div>
                             <div class="form-group p-3">
                                 <label for="company_phone_number">Company Phone Number(s):</label>
