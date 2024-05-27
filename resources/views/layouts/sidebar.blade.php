@@ -6,20 +6,21 @@
       </div>
       <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
         <ul class="nav flex-column">
-          <li class="nav-item">
+          <li class="nav-item ">
             <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
               <svg class="bi"><use xlink:href="#house-fill"/></svg>
               Dashboard
             </a>
           </li>
+         
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2" href="#">
+            <a class="nav-link active d-flex align-items-center gap-2  nav-link active" href="{{ url('/sms_inbox') }}">
               <svg class="bi"><use xlink:href="#file-earmark"/></svg>
               Inbox(25)
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2" href="#">
+            <a class="nav-link d-flex align-items-center gap-2" href="{{ url('/sms_outbox') }}">
               <svg class="bi"><use xlink:href="#cart"/></svg>
               Outbox(04)
             </a>

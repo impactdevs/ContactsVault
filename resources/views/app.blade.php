@@ -11,7 +11,7 @@
     <meta name="generator" content="Hugo 0.122.0">
     <title>Contacts Vault</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <style>
@@ -98,9 +98,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
 </head>
 
 <body>
+
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="check2" viewBox="0 0 16 16">
             <path
@@ -122,6 +125,15 @@
     </svg>
 
     <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+    
+        <div class="floating-container">
+        <div class="floating-button">
+            <a href="{{ url('clients') }}">
+            <i class="material-icons">chat</i>
+            </a>
+        </div> 
+        </div>
+        
         <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
             aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
             <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
@@ -129,6 +141,7 @@
             </svg>
             <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
         </button>
+
         <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
             <li>
                 <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
@@ -252,6 +265,14 @@
         integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous">
     </script>
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
+    <script>
+            ClassicEditor.create( document.querySelector( '#content' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 </body>
 
 </html>

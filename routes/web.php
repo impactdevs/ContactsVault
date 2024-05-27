@@ -2,6 +2,13 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClientsController;
+use App\Http\Controllers\OutboxController;
+use App\Http\Controllers\ComposeController;
+use App\Http\Controllers\InboxController;
+use App\Http\Controllers\WhatsappController;
+use App\Http\Controllers\SmsController;
+use App\Http\Controllers\EmailController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,5 +23,43 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//clients routes
+Route::resource('clients', ClientsController::class);
+
+//compose messages
+Route::get('/compose_sms/{id}', [ComposeController::class, 'compose'])->name('compose');
+Route::post('/sendsms/{id}', [ComposeController::class, 'sendSms'])->name('sendsms');
+Route::get('/compose_whatsapp/{id}', [ComposeController::class, 'composeWhatsappMessage'])->name('composeWhatsapp');
+Route::match(['get', 'post'], '/sendwhatsapp/{id}', [ComposeController::class, 'sendWhatsapp'])->name('sendwhatsapp');
+Route::get('/compose_email/{id}', [ComposeController::class, 'composeEmail'])->name('composeEmail');
+Route::post('/sendemail/{id}', [ComposeController::class, 'sendEmail'])->name('sendemail');
+
+//outbox messages
+Route::get('/sms_outbox', [OutboxController::class, 'outboxSms'])->name('sms_outbox');
+Route::get('/whatsapp_outbox', [OutboxController::class, 'outboxWhatsapp'])->name('whatsapp_outbox');
+Route::get('/email_outbox/', [OutboxController::class, 'outboxEmail'])->name('email_outbox');
+
+//inbox messages
+Route::get('/whatsapp_inbox', [InboxController::class, 'inboxWhatsapp'])->name('whatsapp_inbox');
+Route::get('/email_inbox/', [InboxController::class, 'inboxEmail'])->name('email_inbox');
+Route::get('/sms_inbox', [InboxController::class, 'inboxSms'])->name('sms_inbox');
+
+//api
+Route::get('/sms_inbox_api', [SmsController::class, 'index'])->name('sms_inbox_api');
+Route::get('/email_inbox_api', [EmailController::class, ''])->name('email_inbox_api');
+Route::get('/whatsapp_inbox_api',[WhatsappController::class, ''])->name('whatsapp_inbox_api');
+Route::get('/sms_outbox_api', [SmsController::class, 'outboxSms'])->name('sms_outbox_api');
+Route::get('/email_outbox_api',[EmailController::class, 'outboxEmail'])->name('email_outbox_api');
+Route::get('/whatsapp_outbox_api',[WhatsappController::class,'outboxWhatsapp'])->name('whatsapp_outbox_api');
+
+//webhook
+Route::post('/whatsapp_inbox_webhook', [WhatsappController::class,'inboxWhatsappWebhook'])->name('inbox_webhook');
+
+//draft messages 
+
+//omni
+Route::get('/omnilogs', [OutboxController::class, 'omniLogs'])->name('logs');
+
 
 require __DIR__.'/auth.php';
