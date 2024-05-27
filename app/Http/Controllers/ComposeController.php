@@ -91,7 +91,6 @@ class ComposeController extends Controller
         $subject = $request->subject;
         $body = $request->body;
         $name = $client->name;
-
     
         $request = new HTTP_Request2();
         $request->setUrl('https://e1kq5n.api.infobip.com/email/3/send');

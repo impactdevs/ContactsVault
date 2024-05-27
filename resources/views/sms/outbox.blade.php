@@ -25,15 +25,28 @@
                 @endisset
 
                 @if (!empty($msg) && $msg->isNotEmpty())
-                    @foreach ($msg as $sms)
-                        <ul>
-                            <li><strong>To:</strong> {{ $sms->sentTo ?? 'N/A' }}</li>
-                            <li><strong>From:</strong> {{ $sms->sentFrom ?? 'N/A' }}</li>
-                            <li><strong>Text:</strong> {{ $sms->text ?? 'N/A' }}</li>
-                            <li><strong>Received At:</strong> {{ $sms->receivedAt ?? 'N/A' }}</li>
-                            <li><strong>Delivery Status:</strong> {{ $sms->deliveryStatus ?? 'N/A' }}</li>
-                        </ul>
-                    @endforeach
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sent To</th>
+                            <th>Sent From</th>                    
+                            <th>Text</th>
+                            <th>Received At</th>
+                            <th>Delivery Status</th>
+                        </tr>
+                    </thead>
+                        <tbody>
+                            @foreach ($msg as $sms)
+                                <tr>
+                                    <td>{{ $sms->sentTo ?? 'N/A' }}</td>
+                                    <td>{{ $sms->sentFrom ?? 'N/A' }}</td>
+                                    <td>{{ $sms->text ?? 'N/A' }}</td>
+                                    <td>{{ $sms->receivedAt ?? 'N/A' }}</td>
+                                    <td>{{ $sms->deliveryStatus ?? 'N/A' }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 @else
                     <div>No items found in the database.</div>
                 @endif

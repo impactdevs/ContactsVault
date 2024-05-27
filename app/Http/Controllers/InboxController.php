@@ -26,7 +26,7 @@ class InboxController extends Controller
     {
         $curl = curl_init();
 
-        $url = 'e1kq5n.api.infobip.com'; 
+        $url = 'https://e1kq5n.api.infobip.com/email/1/bulks'; 
         $authorization = 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7'; 
 
         curl_setopt_array($curl, array(
@@ -40,9 +40,9 @@ class InboxController extends Controller
                 'Accept: application/json'
             ),
         ));
-
+        
         $response = curl_exec($curl);
-
+dd($response);
         if ($response === false) {
             $error = curl_error($curl);
             // Handle cURL error
