@@ -16,9 +16,9 @@ class InboxController extends Controller
     public function inboxSms(Request $request)
     {
         //calling the sms controller 
-        $sms= Sms::all();
+        $data= Sms::all();
        
-        return view('sms.index', compact('sms'));
+        return view('sms.index', compact('data'));
     }
 
     //
@@ -26,7 +26,7 @@ class InboxController extends Controller
     {
         $curl = curl_init();
 
-        $url = 'https://e1kq5n.api.infobip.com/email/1/bulks'; 
+        $url = 'https://e1kq5n.api.infobip.com/email/1/logs'; 
         $authorization = 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7'; 
 
         curl_setopt_array($curl, array(
@@ -42,7 +42,7 @@ class InboxController extends Controller
         ));
         
         $response = curl_exec($curl);
-dd($response);
+
         if ($response === false) {
             $error = curl_error($curl);
             // Handle cURL error

@@ -13,38 +13,36 @@ class EmailController extends Controller
     //fetching emails
         public function inbox()
     {
-        $curl = curl_init();
-
-        $url = 'e1kq5n.api.infobip.com'; 
-        $authorization = 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7'; 
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array(
-                'Authorization:'.$authorization,
-                'Accept: application/json'
-            ),
-        ));
-
-        $response = curl_exec($curl);
-
-        if ($response === false) {
-            $error = curl_error($curl);
-            // Handle cURL error
-            return response()->json(['error' => $error], 500);
-        }
-
-        curl_close($curl);
-
-        // You may want to decode the JSON response if it's JSON
-        $responseData = json_decode($response, true);
+       
+         //calling the api
+         $response = Http::withHeaders([
+            'Authorization' => 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7'
+        ])->get('https://e1kq5n.api.infobip.com/email/1/logs');
     
-        // Render the view with response data
-        return view('email.inbox', ['response' => $responseData]);
+        $res = json_decode($response->body());
+
+        if (isset($res->results) && is_array($res->results)) {
+            
+            foreach ($res->results as $apiemail) {
+              
+                $dateTime = new \DateTime( $apiemail->sentAt);
+                $formattedDateTime = $dateTime->format('Y-m-d H:i:s');
+    
+                $email = new EmailOutbox();
+                $email->sentTo = $apiemail->to; 
+                $email->sentFrom = $apiemail->from; 
+                $email->text = $apiemail->text;
+                $email->sentAt = $formattedDateTime;
+                $email->deliveryStatus = $apiemail->status->groupName;
+    
+                
+                $email->save();
+              
+            }
+    
+            return "Api data accessed successfully.";
+         }
+
     }
 
 

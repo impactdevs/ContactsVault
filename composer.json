@@ -9,6 +9,7 @@
         "infobip/infobip-api-php-client": "5.0.0",
         "laravel/breeze": "^2.0",
         "laravel/framework": "^11.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "pear/http_request2": "^2.6",
         "spatie/laravel-webhook-client": "^3.3"

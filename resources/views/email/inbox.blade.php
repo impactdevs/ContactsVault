@@ -31,16 +31,35 @@
        </div>
        <div class="card-body">
            <div class="form">
-                @if(!empty($response))
-                    <ul>
-                        @foreach($response as $email)
-                            <li>{{ $email['subject'] }} - {{ $email['sender'] }}</li>
+           @if (isset($data) && !empty($data))
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th> 
+                            <th>Sent From</th>  
+                            <th>Sent To</th>                  
+                            <th>Body</th>
+                            <th>Delivery Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data as $item)
+                            <tr>
+                               <td>{{ $item->id }}</td>
+                               <td>{{ $item->sentFrom }}</td>
+                               <td>{{ $item->sentTo }}</td>
+                               <td>{{ $item->text }}</td>
+                               <td>{{ $item->receivedAt }}</td>
+                            </tr>
                         @endforeach
-                    </ul>
+                    </tbody>
+                    </table>
                 @else
-                    <p>No emails found.</p>
+                    <div style="color: red;">
+                        <strong>Error:</strong> No email inbox data available.
+                    </div>
                 @endif
-            </div>
+           
 
            </div>
        </div>

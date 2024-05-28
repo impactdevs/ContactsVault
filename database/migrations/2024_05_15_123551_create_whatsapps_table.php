@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('whatsapps', function (Blueprint $table) {
             $table->id();
+            $table->string('sentTo');
+            $table->string('sentFrom');
+            $table->text('text');
+            $table->string('sentAt');
+            $table->string('deliveryStatus');
             $table->timestamps();
         });
     }
