@@ -9,4 +9,3 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::post('/whatsapp_inbox', [WhatsappController::class,'whatsappInbox']);

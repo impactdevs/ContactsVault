@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Clients;
 use HTTP_Request2;
 use Infobip\Configuration;
+use Infobip\Api\WhatsAppApi;
+use Infobip\Model\WhatsAppTextMessage;
+use Infobip\Model\WhatsAppTextContent;
 use Infobip\ApiException;
 
 class ComposeController extends Controller
@@ -35,13 +38,14 @@ class ComposeController extends Controller
         return response()->json(['error' => 'Client does not have a valid phone number'], 400);
     }
 
+   
     try {
         $request = new HTTP_Request2();
-        $request->setUrl('https://e1kq5n.api.infobip.com/sms/2/text/advanced');
+        $request->setUrl('https://n8lr82.api.infobip.com/sms/2/text/advanced');
         $request->setMethod(HTTP_Request2::METHOD_POST);
         $request->setConfig(['follow_redirects' => true]);
         $request->setHeader([
-            'Authorization' => 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7',
+            'Authorization' => env('INFOBIP_API_KEY'),
             'Content-Type' => 'application/json',
             'Accept' => 'application/json'
         ]);
@@ -93,13 +97,13 @@ class ComposeController extends Controller
         $name = $client->name;
     
         $request = new HTTP_Request2();
-        $request->setUrl('https://e1kq5n.api.infobip.com/email/3/send');
+        $request->setUrl('https://n8lr82.api.infobip.com/email/3/send');
         $request->setMethod(HTTP_Request2::METHOD_POST);
         $request->setConfig(array(
             'follow_redirects' => TRUE
         ));
         $request->setHeader(array(
-            'Authorization' => 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7',
+            'Authorization' => env('INFOBIP_API_KEY'),
             'Content-Type' => 'multipart/form-data',
             'Accept' => 'application/json'
         ));
@@ -109,11 +113,14 @@ class ComposeController extends Controller
             'to' => '{"to":"' . $email . '","placeholders":{"firstName":"' . $name . '"}}',
             'text' => $body
         ));
-        
+       
         try {
             $response = $request->send();
+            
             if ($response->getStatus() == 200) {
-                return response()->json(['success' => 'Email sent successfully']);
+                $message = 'message sent successfully';
+                return redirect()->back()->with('success', $message);
+                
             } else {
                 return response()->json(['error' => 'Unexpected HTTP status: ' . $response->getStatus() . ' ' . $response->getReasonPhrase()], 500);
             }
@@ -140,80 +147,56 @@ class ComposeController extends Controller
     //whatsapp message 
     public function sendWhatsapp(Request $request, $id)
     {
-       
-        $client = Clients::find($id);
-    
-      
-        if (!$client) {
-            return abort(404);
-        }
-    
         
-        $request->validate([
-            'phone_no' => 'required|string',
-            'message' => 'required|string',
-        ]);
+        $client = Clients::find($id);
+
+    if (!$client) {
+        return abort(404);
+    }
+
+    $request->validate([
+        'phone_no' => 'required|string',
+        'message' => 'required|string',
+    ]);
+
+    $phoneNumber = $request->input('phone_no');
+    $message = $request->input('message');
+
+    try
+    {
+     
+        $configuration = new Configuration(
+            host: 'https://n8lr82.api.infobip.com/whatsapp/1/message/text',
+            apiKey: env('INFOBIP_API_KEY')
+        );
+
+        $whatsAppApi = new WhatsAppApi(config: $configuration);
+
+        $textMessage = new WhatsAppTextMessage(
+            from: '256753669047',
+            to: $phoneNumber,
+            content: new WhatsAppTextContent(
+                text: $message
+            )
+        );
+
+        $messageInfo = $whatsAppApi->sendWhatsAppTextMessage($textMessage);
     
-        $phoneNumber = $request->input('phone_no');
-        $message = $request->input('message');
-    
-        $url = 'https://e1kq5n.api.infobip.com/whatsapp/1/message/text';
-        $authorization = 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7';
-    
-        $payload = [
-            'from' => '441134960000',
-            'to' => $phoneNumber,
-            'messageId' => 'a28dd97c-1ffb-4fcf-99f1-0b557ed381da',
-            'content' => ['text' => $message],
-            'callbackData' => 'Callback data',
-            'notifyUrl' => 'https://www.example.com/whatsapp',
-            'urlOptions' => [
-                'shortenUrl' => true,
-                'trackClicks' => true,
-                'trackingUrl' => 'https://example.com/click-report',
-                'removeProtocol' => true,
-                'customDomain' => 'example.com'
-            ]
-        ];
-    
-        $curl = curl_init();
-    
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode($payload),
-            CURLOPT_HTTPHEADER => [
-                'Authorization: ' . $authorization,
-                'Content-Type: application/json',
-                'Accept: application/json'
-            ],
-        ]);
-    
-        $response = curl_exec($curl);
-        $httpStatusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $error = curl_error($curl);
-        curl_close($curl);
-    
-        if ($response === false) {
-            return response()->json(['error' => 'Curl error: ' . $error], 500);
-        }
-    
-        $responseDecoded = json_decode($response, true);
-    
-        if ($httpStatusCode == 200) {
-            //return response()->json(['success' => 'Message sent successfully', 'response' => $responseDecoded]);
-            $message = 'whatsapp message sent successfully';
-            return redirect()->back()->with('success', $message);
+        //dd($messageInfo);
+        if($messageInfo->getStatus()->getCode() == 0)
+        {
+        $message = 'Whatsapp sent successfully';
+        return redirect()->back()->with('success', $message);
         } else {
-            //return response()->json(['error' => 'Unexpected HTTP status: ' . $httpStatusCode, 'response' => $responseDecoded], 500);
-            $message = 'Whatsapp mesage not sent';
+            $message = 'Failed to send messagge' . $messageInfo->getStatus()->getGroupName();
             return redirect()->back()->with('error', $message);
         }
+               
+    } catch (\Exception $e) {
+        $message = 'Failed to send message';
+        return redirect()->back()->with('error', $message);
+       // return response()->json(['error' => 'Error: ' . $e->getMessage()], 500);
     }
+    }
+    
 }

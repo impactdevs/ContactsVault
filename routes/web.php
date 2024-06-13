@@ -10,6 +10,8 @@ use App\Http\Controllers\InboxController;
 use App\Http\Controllers\WhatsappController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ConversationsController;
+use App\Http\Controllers\WebhookController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -59,12 +61,18 @@ Route::get('/email_outbox_api',[EmailController::class, 'outboxEmail'])->name('e
 Route::get('/whatsapp_outbox_api',[WhatsappController::class,'outboxWhatsapp'])->name('whatsapp_outbox_api');
 
 //webhook
-Route::post('/whatsapp_inbox_webhook', [WhatsappController::class,'inboxWhatsappWebhook'])->name('inbox_webhook');
-
-//draft messages 
+Route::post('webhook/whatsapp_outbox', [WhatsappController::class, 'infobip']);
 
 //omni
 Route::get('/omnilogs', [OutboxController::class, 'omniLogs'])->name('logs');
+
+//conversations
+Route::get('/get_conversations', [ConversationsController::class, 'index'])->name('conversations');
+Route::get('/send_message', [ConversationsController::class, 'sendMessage'])->name('send_msg');
+
+
+Route::get('/create_message', [MessagesController::class, 'create'])->name('create_msg');
+Route::post('/send_message', [MessagesController::class, 'sendMessage'])->name('send_msg');
 
 
 require __DIR__.'/auth.php';

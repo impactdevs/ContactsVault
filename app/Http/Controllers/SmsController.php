@@ -25,8 +25,8 @@ class SmsController extends Controller
     {
        //calling the api
        $response = Http::withHeaders([
-        'Authorization' => 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7'
-    ])->get('https://e1kq5n.api.infobip.com/sms/1/inbox/reports');
+        'Authorization' =>  env('INFOBIP_API_KEY')
+    ])->get('https://n8lr82.api.infobip.com/sms/1/inbox/reports');
 
     $res = json_decode($response->body());
 
@@ -77,11 +77,11 @@ class SmsController extends Controller
 
     try {
         $request = new HTTP_Request2();
-        $request->setUrl('https://e1kq5n.api.infobip.com/sms/2/text/advanced');
+        $request->setUrl('https://n8lr82.api.infobip.com/sms/2/text/advanced');
         $request->setMethod(HTTP_Request2::METHOD_POST);
         $request->setConfig(['follow_redirects' => true]);
         $request->setHeader([
-            'Authorization' => 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7',
+            'Authorization' =>  env('INFOBIP_API_KEY'),
             'Content-Type' => 'application/json',
             'Accept' => 'application/json'
         ]);
@@ -114,8 +114,8 @@ class SmsController extends Controller
     {
          //calling the api
        $response = Http::withHeaders([
-        'Authorization' => 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7'
-    ])->get('https://e1kq5n.api.infobip.com/sms/3/logs');
+        'Authorization' =>  env('INFOBIP_API_KEY')
+    ])->get('https://n8lr82.api.infobip.com/sms/3/logs');
 
     $res = json_decode($response->body());
 

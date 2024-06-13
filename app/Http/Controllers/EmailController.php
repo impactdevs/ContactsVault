@@ -16,8 +16,8 @@ class EmailController extends Controller
        
          //calling the api
          $response = Http::withHeaders([
-            'Authorization' => 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7'
-        ])->get('https://e1kq5n.api.infobip.com/email/1/logs');
+            'Authorization' =>  env('INFOBIP_API_KEY')
+        ])->get('https://n8lr82.api.infobip.com/email/1/logs');
     
         $res = json_decode($response->body());
 
@@ -71,13 +71,13 @@ class EmailController extends Controller
 
     
         $request = new HTTP_Request2();
-        $request->setUrl('https://e1kq5n.api.infobip.com/email/3/send');
+        $request->setUrl('https://n8lr82.api.infobip.com/email/3/send');
         $request->setMethod(HTTP_Request2::METHOD_POST);
         $request->setConfig(array(
             'follow_redirects' => TRUE
         ));
         $request->setHeader(array(
-            'Authorization' => 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7',
+            'Authorization' => env('INFOBIP_API_KEY'),
             'Content-Type' => 'multipart/form-data',
             'Accept' => 'application/json'
         ));
@@ -106,8 +106,8 @@ class EmailController extends Controller
     {
           //calling the api
           $response = Http::withHeaders([
-            'Authorization' => 'App 178ffc5906619ad39ca8b839f57d861e-c466493b-4429-4f92-a172-98c6c4fb03d7'
-        ])->get('https://e1kq5n.api.infobip.com/email/1/logs');
+            'Authorization' => env('INFOBIP_API_KEY')
+        ])->get('https://n8lr82.api.infobip.com/email/1/logs');
     
         $res = json_decode($response->body());
 

@@ -40,7 +40,7 @@ class OutboxController extends Controller
         try {
             $response = Http::withHeaders([
                 'Authorization' => 'App ' . env('INFOBIP_API_KEY')
-            ])->get('https://e1kq5n.api.infobip.com/omni/1/logs?channel=EMAIL');
+            ])->get('https://n8lr82.api.infobip.com/omni/1/logs?channel=EMAIL');
 
             $res = json_decode($response->body());
 
