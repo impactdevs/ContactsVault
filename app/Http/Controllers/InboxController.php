@@ -66,11 +66,18 @@ class InboxController extends Controller
 
         curl_close($curl);
 
-        // You may want to decode the JSON response if it's JSON
-        $responseData = json_decode($response, true);
     
+        $responseData = json_decode($response, true);
+       
+        if (json_last_error() != JSON_ERROR_NONE )
+        {
+            return redirect()->back()->with('error', __('Invalid JSON response data.'));
+        }
+
+        $data =  array();
+       // dd($responseData);
         // Render the view with response data
-        return view('email.inbox', ['response' => $responseData]);
+        return view('email.inbox', compact('responseData'));
     }
 
     //

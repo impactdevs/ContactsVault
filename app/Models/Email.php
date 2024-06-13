@@ -8,4 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Email extends Model
 {
     use HasFactory;
+
+    protected $table = 'emails';
+
+    protected $fillable = [
+        'sentTo',
+        'sentFrom',
+        'text',
+        'recievedAt' 
+       
+    ];
+
+    protected $casts = [
+        'created_at'=>'datetime',
+        'updated_at'=>'datetime'
+    ];
 }

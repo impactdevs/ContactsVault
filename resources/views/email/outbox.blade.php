@@ -18,23 +18,27 @@
         </div>
         <div class="card-body">
             <div class="form">
-                @if (isset($data) && $data->isNotEmpty())
+                @if ($data)
                 <table class="table table-bordered">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Sent To</th>
                             <th>Sent From</th>                    
                             <th>Body</th>
-                            <th>Delivery Status</th>
+                            <th>Status</th>
+                            <th>Date</th>          
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $item)
+                    @foreach ($data as $item)
                             <tr>
-                                <td>{{ $item->sentTo }}</td>
-                                <td>{{ $item->sentFrom }}</td>                              
-                                <td>{{ $item->text }}</td>                              
-                                <td>{{ $item->deliveryStatus }}</td>
+                               <td>{{ $item->id }}</td>
+                               <td>{{ $item->sentTo }}</td>
+                               <td>{{ $item->sentFrom }}</td>
+                               <td>{{ $item['text'] }}</td>
+                               <td>{{ $item['deliveryStatus'] }}</td>
+                               <td>{{ $item['sentAt'] }}</td>
                             </tr>
                         @endforeach
                     </tbody>

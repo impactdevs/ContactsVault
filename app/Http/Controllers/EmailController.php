@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Clients;
 use App\Models\EmailOutbox;
+use App\Models\Email;
 use HTTP_Request2;
 use Illuminate\Support\Facades\Http;
 
@@ -28,12 +29,12 @@ class EmailController extends Controller
                 $dateTime = new \DateTime( $apiemail->sentAt);
                 $formattedDateTime = $dateTime->format('Y-m-d H:i:s');
     
-                $email = new EmailOutbox();
+                $email = new Email();
                 $email->sentTo = $apiemail->to; 
                 $email->sentFrom = $apiemail->from; 
                 $email->text = $apiemail->text;
-                $email->sentAt = $formattedDateTime;
-                $email->deliveryStatus = $apiemail->status->groupName;
+                $email->recievedAt = $formattedDateTime;
+               // $email->deliveryStatus = $apiemail->status->groupName;
     
                 
                 $email->save();

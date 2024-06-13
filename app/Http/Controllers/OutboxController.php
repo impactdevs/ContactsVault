@@ -24,8 +24,10 @@ class OutboxController extends Controller
     public function outboxEmail()
     {
         $data = EmailOutbox::all();
+       // dd($data);
         return view('email.outbox', compact('data'));
     }
+
 
     
     public function outboxWhatsapp()

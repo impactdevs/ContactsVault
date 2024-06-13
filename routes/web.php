@@ -54,7 +54,7 @@ Route::get('/sms_inbox', [InboxController::class, 'inboxSms'])->name('sms_inbox'
 
 //api
 Route::get('/sms_inbox_api', [SmsController::class, 'index'])->name('sms_inbox_api');
-Route::get('/email_inbox_api', [EmailController::class, ''])->name('email_inbox_api');
+Route::get('/email_inbox_api', [EmailController::class, 'inbox'])->name('email_inbox_api');
 Route::get('/whatsapp_inbox_api',[WhatsappController::class, ''])->name('whatsapp_inbox_api');
 Route::get('/sms_outbox_api', [SmsController::class, 'outboxSms'])->name('sms_outbox_api');
 Route::get('/email_outbox_api',[EmailController::class, 'outboxEmail'])->name('email_outbox_api');

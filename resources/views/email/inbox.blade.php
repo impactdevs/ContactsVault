@@ -31,25 +31,25 @@
        </div>
        <div class="card-body">
            <div class="form">
-           @if (isset($data) && !empty($data))
+           @if ($responseData)
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>ID</th> 
+                            
                             <th>Sent From</th>  
-                            <th>Sent To</th>                  
+                            <th>Sent To</th>                 
                             <th>Body</th>
-                            <th>Delivery Status</th>
+                            <th>Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $item)
+                        @foreach ($responseData['results'] as $item)
                             <tr>
-                               <td>{{ $item->id }}</td>
-                               <td>{{ $item->sentFrom }}</td>
-                               <td>{{ $item->sentTo }}</td>
-                               <td>{{ $item->text }}</td>
-                               <td>{{ $item->receivedAt }}</td>
+                              
+                               <td>{{ $item['from'] }}</td>
+                               <td>{{ $item['to'] }}</td>
+                               <td>{{ $item['text'] }}</td>
+                               <td>{{ $item['sentAt'] }}</td>
                             </tr>
                         @endforeach
                     </tbody>
